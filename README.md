@@ -1,6 +1,8 @@
-I tried taking computer science courses, and I tried learning Python at Colgate University. My major was neuroscience, but I ended up trying anyway. I went through Computer Science 101 and 102, but I feel like I can do much better.
+I studied neuroscience at Colgate University, but I also took Computer Science 101 and 102 and tried learning Python. I got through the courses, but I still feel like I can do much better.
 
-I now work for an AI company, and I want to understand more of the technical side. This is my first Python project here. I wanted to start with something small that I could understand, use, and keep improving.
+I found JavaScript easier to get started with, especially when I could see what I was building on a screen. My other projects, [Sentient](https://github.com/pahulsachdeva/sentient-behavioral-intelligence) and [NeuroLift](https://github.com/pahulsachdeva/neurolift-behavioral-experiments), use JavaScript.
+
+I now work for an AI company, and I want to understand more of the technical side. I'm coming back to Python and giving the basics more attention. This is the first Python project I'm sharing here. I kept it small so I can understand each part and build from there.
 
 # AI Practice Log
 
