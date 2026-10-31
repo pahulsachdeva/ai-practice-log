@@ -3,3 +3,4 @@ __pycache__/
 .venv/
 practice.csv
 !examples/practice.csv
+goal.json

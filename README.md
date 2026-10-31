@@ -17,6 +17,9 @@ Knowing about a feature and being able to use it on my own are two different thi
 - Shows how many sessions I logged under each result.
 - Lists tasks to practise again, based on the latest entry for each task.
 - Keeps past notes in a CSV file I can open and read.
+- Searches task names and notes.
+- Tracks a weekly practice goal.
+- Lets me correct an entry without changing its original date.
 
 For example, I might practise asking an AI assistant to summarise an article or turn study notes into a quiz. The sample file has made-up entries like these. It has no work or customer data.
 
@@ -38,7 +41,10 @@ AI Practice Log
 1. Add practice
 2. See summary
 3. Read past notes
-4. Exit
+4. Search notes
+5. Weekly goal
+6. Edit an entry
+7. Exit
 Choose an option:
 ```
 
@@ -62,9 +68,21 @@ Tasks to practise again:
 
 The article summary no longer appears in the practice list because its latest entry says “on my own.” The summary counts every session; the practice list uses only the latest entry for each task. Task names ignore capital letters and spaces at the ends.
 
+## The next step
+
+I added a few things I would actually use while learning:
+
+**Search notes:** choose 4 and type a word from a task or note. Capital letters don't matter. An empty search shows all entries.
+
+**Weekly goal:** choose 5 to see this week's count or set a new goal. The default is three sessions. A week starts on Monday, and future-dated entries don't count. Every logged session counts, including one where I needed help. The goal repeats each week and saves in `goal.json`, which Git ignores.
+
+**Edit an entry:** choose 6 and pick the entry number shown. Press Enter to keep a field, or type `-` to clear a note. The original date stays the same. The program writes the updated CSV to a temporary file first, then replaces the old file after writing succeeds.
+
+The existing CSV format still works. There is no need to change the example file.
+
 ## Python I am practising
 
-Functions, loops, lists, dictionaries, reading and writing CSV files, dates, and handling input errors. I used `Counter` to count results and `pathlib` to work with file paths.
+Functions, loops, lists, dictionaries, reading and writing CSV files, dates, and handling input errors. I used `Counter` to count results and `pathlib` to work with file paths. The new features add searching strings, comparing dates, saving a small JSON setting, and updating a file safely.
 
 The program does not call an AI model or judge its answers. It records my own experience with a task.
 
@@ -76,4 +94,4 @@ python3 -m unittest discover -s tests -v
 
 ## What I want to add later
 
-A way to search past notes and a weekly practice goal. For now, I want to keep the program small and understand each part.
+A way to filter notes by date and show how a single task changed over time. I still want to keep the program small enough to understand each part.
