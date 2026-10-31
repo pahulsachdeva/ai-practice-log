@@ -8,6 +8,7 @@ from collections import Counter
 from datetime import date, timedelta
 from pathlib import Path
 
+# Keep personal files next to the program so it works from any folder.
 LOG_FILE = Path(__file__).parent / 'practice.csv'
 GOAL_FILE = LOG_FILE.with_name('goal.json')
 FIELDS = ['date', 'task', 'result', 'note']
@@ -55,6 +56,7 @@ def show_summary(sessions):
     if not sessions:
         print('No practice logged yet. Add your first task.')
         return
+    # Count every practice session, even if I needed help.
     counts = Counter(session['result'] for session in sessions)
     print(f'\nPractice sessions: {len(sessions)}')
     for result in RESULTS:
@@ -95,6 +97,7 @@ def add_session():
 
 
 def search_sessions(sessions, query):
+    # Ignore capital letters and spaces at the ends of the search.
     query = query.strip().casefold()
     return [session for session in sessions
             if query in (session['task'] + ' ' + session['note']).casefold()]
@@ -102,12 +105,15 @@ def search_sessions(sessions, query):
 
 def weekly_progress(sessions, today=None):
     today = today or date.today()
+    # weekday() gives Monday the number 0, Tuesday 1, and so on.
     monday = today - timedelta(days=today.weekday())
+    # Only count entries from this Monday through today.
     return sum(monday <= date.fromisoformat(session['date']) <= today
                for session in sessions)
 
 
 def read_goal(path):
+    # Start with three sessions a week until I choose a different goal.
     if not path.exists():
         return 3
     with path.open(encoding='utf-8') as file:
@@ -129,7 +135,9 @@ def edit_session(path, entry_number, task, result, note):
         raise ValueError('Choose one of the entry numbers shown.')
     if not task.strip() or result not in RESULTS:
         raise ValueError('Add a task and choose a valid result.')
+    # Menu numbers start at 1, but Python lists start at 0.
     old = sessions[entry_number - 1]
+    # Copy the old entry so its date stays the same.
     sessions[entry_number - 1] = {**old, 'task': task.strip(),
                                   'result': result, 'note': note.strip()}
     # Write a new file first. Replace the original only after writing succeeds.
@@ -175,6 +183,7 @@ def edit_entry():
     task = input(f"Task [{old['task']}]: ").strip() or old['task']
     for number, result in enumerate(RESULTS, start=1):
         print(f'{number}. {result.capitalize()}')
+    # A blank answer keeps the result that was already saved.
     choice = input(f"Result [{old['result']}], or choose 1, 2, or 3: ").strip()
     if choice and choice not in ['1', '2', '3']:
         raise ValueError('Choose 1, 2, or 3. No changes were saved.')
@@ -187,6 +196,7 @@ def edit_entry():
 
 def main():
     print('AI Practice Log')
+    # Keep showing the menu until the user chooses Exit.
     while True:
         print('\n1. Add practice\n2. See summary\n3. Read past notes'
               '\n4. Search notes\n5. Weekly goal\n6. Edit an entry\n7. Exit')
@@ -221,5 +231,6 @@ def main():
             break
 
 
+# Start the menu only when this file is run directly.
 if __name__ == '__main__':
     main()
