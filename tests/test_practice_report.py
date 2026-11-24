@@ -38,6 +38,18 @@ class PracticeReportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'earlier week'):
             make_report([], date(2026, 10, 12), date(2026, 10, 1))
 
+    def test_comparison_uses_the_same_weekdays_for_a_partial_week(self):
+        rows = [entry('2026-10-05'), entry('2026-10-06'),
+                entry('2026-10-07', 'Outside the previous period'),
+                entry('2026-10-12'), entry('2026-10-12', 'Make a checklist'),
+                entry('2026-10-14', 'Future entry')]
+        text = make_report(rows, date(2026, 10, 12), date(2026, 10, 13), compare=True)
+        self.assertIn('Previous period: 2026-10-05 to 2026-10-06', text)
+        self.assertIn('Sessions logged: 2 to 2 (+0)', text)
+        self.assertIn('Days practised: 2 to 1 (-1)', text)
+        self.assertIn('Different tasks: 1 to 2 (+1)', text)
+        self.assertNotIn('A private note.', text)
+
     def test_empty_week_is_explained(self):
         text = make_report([], date(2026, 10, 1), date(2026, 10, 4))
         self.assertIn('Sessions logged: 0', text)
@@ -66,6 +78,14 @@ class ReportCommandTests(unittest.TestCase):
             self.assertNotIn('Traceback', result.stderr)
             self.assertEqual(source.read_bytes(), before)
 
+    def test_comparison_flag_includes_the_full_previous_week_for_an_old_report(self):
+        folder = Path(__file__).resolve().parents[1]
+        result = subprocess.run([sys.executable, 'practice_report.py',
+                                 '--file', 'examples/practice.csv', '--week', '2026-10-01',
+                                 '--compare'], cwd=folder, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('Previous period: 2026-09-21 to 2026-09-27', result.stdout)
+
     def test_example_command_prints_expected_counts(self):
         folder = Path(__file__).resolve().parents[1]
         result = subprocess.run([sys.executable, 'practice_report.py',
@@ -74,3 +94,4 @@ class ReportCommandTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertIn('Sessions logged: 4', result.stdout)
         self.assertIn('Days practised: 4', result.stdout)
+        self.assertNotIn('Previous period:', result.stdout)

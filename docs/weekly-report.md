@@ -18,6 +18,14 @@ python3 practice_report.py --file examples/practice.csv --week 2026-10-01 --outp
 
 The command refuses to replace an existing file. Pick a new filename if you want another copy. Without `--output`, it just prints the report. Without `--file` or `--week`, it uses your personal CSV and the current week.
 
+## Compare with the previous week
+
+```bash
+python3 practice_report.py --file examples/practice.csv --week 2026-10-01 --compare
+```
+
+The comparison shows the previous count, the selected week's count, and the difference for sessions, days practised, and tasks. For a week in progress, it uses the same weekdays in both periods. A Monday-to-Tuesday report compares against the previous Monday and Tuesday.
+
 ## What the counts mean
 
 A week starts on Monday. For the current week, the report stops at today. Future entries do not count.

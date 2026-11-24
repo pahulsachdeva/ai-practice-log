@@ -92,6 +92,8 @@ The program does not call an AI model or judge its answers. It records my own ex
 python3 -m unittest discover -s tests -v
 ```
 
-## What I want to add later
+## Review practice over time
 
-A way to filter notes by date and show how a single task changed over time. I still want to keep the program small enough to understand each part.
+Task history shows how one task changed over time. The weekly report counts sessions, practice days, and different tasks. Add `--compare` to compare those totals with the same weekdays in the previous week.
+
+[Task history guide](docs/task-history.md) · [Weekly report guide](docs/weekly-report.md)
